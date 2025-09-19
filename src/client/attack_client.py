@@ -45,6 +45,31 @@ class AttackClient(metaclass=Singleton):
 
         return attack
 
+        
+
+    def create_attack(attack_data):
+        """
+        Envoie une requête POST pour créer une nouvelle attaque.
+        
+        attack_data : dict contenant les infos de l'attaque
+                    ex: {"name": "Fireball", "damage": 50, "type": "magic"}
+        """
+        url = f"{BASE_URL}/attacks"  # endpoint de création
+        try:
+            response = requests.post(url, json=attack_data)
+            
+            # Vérification du code HTTP
+            if response.status_code == 201:
+                print("✅ Attaque créée avec succès")
+                return response.json()  # Retourne l'objet créé
+            else:
+                print(f"❌ Erreur {response.status_code} : {response.text}")
+                return None
+        except requests.exceptions.RequestException as e:
+            print(f"⚠ Erreur de connexion : {e}")
+            return None
+
+
 
 # Execute Code When the File Runs as a Script
 if __name__ == "__main__":
